@@ -13,9 +13,12 @@ hs_err_pid*
 /target/
 client_secrets.json
 
-# idea
+# IDEs
 .idea
 *.iml
 .classpath
 .project
 .settings
+
+# security
+.secrets

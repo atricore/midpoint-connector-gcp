@@ -1,0 +1,103 @@
+name: Draft Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Draft release version (e.g., v1.3.0-rc1)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up JDK 11
+      uses: actions/setup-java@v4
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Update version in pom.xml
+      run: |
+        VERSION=${{ github.event.inputs.version }}
+        VERSION_NO_V=${VERSION#v}
+        mvn versions:set -DnewVersion=${VERSION_NO_V}
+        
+    - name: Run tests
+      run: mvn clean test
+      
+    - name: Build connector JAR
+      run: mvn clean package -DskipTests
+      
+    - name: Prepare release artifacts
+      run: |
+        mkdir -p release-artifacts
+        cp target/connector-gcp-*.jar release-artifacts/
+        cp README.md release-artifacts/
+        cp LICENSE release-artifacts/
+        if [ -d "examples" ]; then
+          cp examples/*.xml release-artifacts/ 2>/dev/null || true
+        fi
+        
+    - name: Generate checksums
+      run: |
+        cd release-artifacts
+        for file in *.jar; do
+          sha256sum "$file" > "$file.sha256"
+        done
+        
+    - name: Create Draft Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.event.inputs.version }}
+        name: MidPoint GCP Connector ${{ github.event.inputs.version }}
+        files: release-artifacts/*
+        generate_release_notes: true
+        draft: true
+        prerelease: ${{ github.event.inputs.prerelease }}
+        body: |
+          ## MidPoint GCP Connector ${{ github.event.inputs.version }}
+          
+          ⚠️ **This is a draft release for testing purposes**
+          
+          ### Installation
+          1. Download the `connector-gcp-*.jar` file
+          2. Copy it to your MidPoint's `icf-connectors` directory
+          3. Restart MidPoint
+          
+          ### Compatibility
+          - MidPoint 4.8+
+          - Java 11, 17, 21
+          - Google Cloud SDK v26.34.0
+          
+          ### Testing Notes
+          - Please test thoroughly before using in production
+          - Report any issues in the GitHub repository
+          
+          ### Files in this release
+          - `connector-gcp-*.jar` - Main connector JAR file
+          - `README.md` - Documentation
+          - `LICENSE` - License information
+          - `*.xml` - Configuration examples (if available)
+          - `*.sha256` - Checksums for verification
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

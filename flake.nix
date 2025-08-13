@@ -21,7 +21,7 @@
   in {
     devShells = forEachSupportedSystem ({pkgs}: {
       default = pkgs.mkShell {
-        packages = with pkgs; [jdk maven pgadmin];
+        packages = with pkgs; [jdk maven act];
         shellHook = ''
           echo "Atricore Midpoint: Java dev env ("${pkgs.jdk.name}" / ${pkgs.maven.name})"
           export JAVA_HOME="${pkgs.jdk}/lib/openjdk"
