@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<resource xmlns="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:c="http://midpoint.evolveum.com/xml/ns/public/common/common-3" xmlns:icfs="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/resource-schema-3" xmlns:org="http://midpoint.evolveum.com/xml/ns/public/common/org-3" xmlns:q="http://prism.evolveum.com/xml/ns/public/query-3" xmlns:ri="http://midpoint.evolveum.com/xml/ns/public/resource/instance-3" xmlns:t="http://prism.evolveum.com/xml/ns/public/types-3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" oid="10000000-0000-0000-0002-000000000327">
+    <name>GCP : my-gcp-project</name>
+    <description>my-gcp-project (GPC Project)</description>
+    <documentation>This resources manages GCP project permissions for : my-gcp-project</documentation>
+    <super>
+        <resourceRef oid="10000000-0000-0000-0001-000000000199"/>
+    </super>
+    <connectorConfiguration xmlns:icfc="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/connector-schema-3">
+        <icfc:resultsHandlerConfiguration>
+            <icfc:enableFilteredResultsHandler>false</icfc:enableFilteredResultsHandler>
+        </icfc:resultsHandlerConfiguration>
+        <icfc:configurationProperties xmlns:icfcga="http://midpoint.evolveum.com/xml/ns/public/connector/icf-1/bundle/com.atricore.iam.evolveum.connetor.connector-gcp/com.atricore.iam.midpoint.connector.gcp.GoogleCloudConnector">
+            <!-- override the default connector -->
+            <icfcga:project>my-gcp-project</icfcga:project>
+        </icfc:configurationProperties>
+    </connectorConfiguration>
+
+</resource>

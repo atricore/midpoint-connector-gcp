@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>connector-parent</artifactId>
+        <groupId>com.evolveum.polygon</groupId>
+        <version>1.5.0.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.atricore.iam.evolveum.connetor</groupId>
+    <artifactId>connector-gcp</artifactId>
+    <version>1.3.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>GoogleCloud Connector</name>
+
+    <properties>
+        <connectorPackage>com.atricore.iam.midpoint.connector.gcp</connectorPackage>
+        <connectorClass>GoogleCloudConnector</connectorClass>
+        <framework.compatibilityVersion>1.4</framework.compatibilityVersion>
+        <framework.releaseVersion>1.0</framework.releaseVersion>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>evolveum-nexus-releases</id>
+            <name>Internal Releases</name>
+            <url>https://nexus.evolveum.com/nexus/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>evolveum-nexus-snapshots</id>
+            <name>Internal Releases</name>
+            <url>https://nexus.evolveum.com/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>google-api-services</id>
+            <url>https://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
+            <id>google-api-services-beta</id>
+            <url>https://google-api-client-libraries.appspot.com/mavenrepo</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <archive>
+                        <index>true</index>
+                        <manifest>
+                            <mainClass>com.evolveum.polygon.connector.googleapps.Main</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.cloud</groupId>
+                <artifactId>libraries-bom</artifactId>
+                <version>26.34.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-iam-admin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>google-cloud-resourcemanager</artifactId>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-cloudidentity</artifactId>
+            <version>v1-rev20241010-2.0.0</version>
+        </dependency>
+        -->
+
+        <!--dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-iam</artifactId>
+            <version>v1-rev20240118-2.0.0</version>
+        </dependency-->
+
+        <!--dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-iam</artifactId>
+            <version>v2-rev20240530-2.0.0</version>
+        </dependency-->
+
+        <!-- com/google/apis/google-api-services-iam/v2-rev20240530-2.0.0 -->
+
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-licensing</artifactId>
+            <version>v1-rev20220430-2.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.12.5</version>
+        </dependency>
+
+        <!--
+            For Main.java
+        -->
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.34.1</version>
+        </dependency>
+
+    </dependencies>
+</project>
