@@ -1,4 +1,4 @@
-# MidPoint GCP Connector
+# midPoint Connector for GCP
 
 A MidPoint connector for managing Google Cloud Platform (GCP) Identity and Access Management (IAM) permissions and their assignments to principals (users, groups, and service accounts)
 for a specific **GCP project**.
